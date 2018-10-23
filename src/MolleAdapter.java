@@ -6,6 +6,8 @@ import java.io.StringReader;
 
 public class MolleAdapter {
 
+    // Hi2
+
     public boolean proveFormula(String formula) throws MolleUnrecognizedFormulaException {
 
         FormulaParser formulaParser = new FormulaParser(new StringReader(formula), false);
