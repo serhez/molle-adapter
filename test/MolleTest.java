@@ -57,15 +57,15 @@ public class MolleTest {
     @Test
     public void crossValidateRandomInputFile() {
 
-        InputGenerator inputGenerator = new InputGenerator(100, 50);
+        InputGenerator inputGenerator = new InputGenerator(100000, 50);
         Prover prover = new Prover();
         MolleAdapter molleAdapter = new MolleAdapter();
 
         ArrayList<String> formulas = inputGenerator.generateFormulas();
 
-        for (String formula : formulas) {
+        for (int i=0; i<formulas.size(); i++) {
             try {
-                Assertions.assertTrue(prover.proveFormula(formula) == molleAdapter.proveFormula(inputGenerator.translateFormulaToMolle(formula)), ("The validity of the formula " + formula + " is not consistent."));
+                Assertions.assertTrue(prover.proveFormula(formulas.get(i)) == molleAdapter.proveFormula(inputGenerator.translateFormulaToMolle(formulas.get(i))), ("The validity of the formula " + formulas.get(i) + " is not consistent. " + i + " formulas have been successfully tested previously."));
             } catch (UnrecognizableFormulaException e) {
                 e.printMessage();
             } catch (MolleUnrecognizedFormulaException e) {
