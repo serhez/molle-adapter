@@ -57,11 +57,11 @@ public class MolleTest {
     @Test
     public void crossValidateRandomInputFile() {
 
-        InputGenerator inputGenerator = new InputGenerator(100000, 50);
-        Prover prover = new Prover();
+        InputGenerator inputGenerator = new InputGenerator();
+        Prover prover = new Prover(false);
         MolleAdapter molleAdapter = new MolleAdapter();
 
-        ArrayList<String> formulas = inputGenerator.generateFormulas();
+        ArrayList<String> formulas = inputGenerator.generateFormulas(10000, 50, "K");
 
         for (int i=0; i<formulas.size(); i++) {
             try {
