@@ -60,12 +60,13 @@ public class MolleTest {
         InputGenerator inputGenerator = new InputGenerator();
         Prover prover = new Prover(false);
         MolleAdapter molleAdapter = new MolleAdapter();
+        ModalSystem system = new ModalSystem("K");
 
         ArrayList<String> formulas = inputGenerator.generateFormulas(10000, 50, "K");
 
         for (int i=0; i<formulas.size(); i++) {
             try {
-                Assertions.assertTrue(prover.proveFormula(formulas.get(i)) == molleAdapter.proveFormula(inputGenerator.translateFormulaToMolle(formulas.get(i))), ("The validity of the formula " + formulas.get(i) + " is not consistent. " + i + " formulas have been successfully tested previously."));
+                Assertions.assertTrue(prover.proveFormula(formulas.get(i), system) == molleAdapter.proveFormula(inputGenerator.translateFormulaToMolle(formulas.get(i))), ("The validity of the formula " + formulas.get(i) + " is not consistent. " + i + " formulas have been successfully tested previously."));
             } catch (UnrecognizableFormulaException e) {
                 e.printMessage();
             } catch (MolleUnrecognizedFormulaException e) {
