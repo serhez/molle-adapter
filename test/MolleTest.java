@@ -22,7 +22,7 @@ public class MolleTest {
 
         for (String formula : formulas) {
             try {
-                Assertions.assertTrue(molleAdapter.proveFormula(formula) == true, ("Molle cannot validate " + formula));
+                Assertions.assertTrue(molleAdapter.proveFormula(formula), ("Molle cannot validate " + formula));
             } catch (MolleUnrecognizedFormulaException e) {
                 e.printMessage();
             }
@@ -47,7 +47,7 @@ public class MolleTest {
 
         for (String formula : formulas) {
             try {
-                Assertions.assertTrue(molleAdapter.proveFormula(formula) == false, ("Molle cannot invalidate " + formula));
+                Assertions.assertFalse(molleAdapter.proveFormula(formula), ("Molle cannot invalidate " + formula));
             } catch (MolleUnrecognizedFormulaException e) {
                 e.printMessage();
             }
