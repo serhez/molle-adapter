@@ -74,4 +74,35 @@ public class MolleTest {
             }
         }
     }
+
+    @Test
+    public void crossValidateInconsistentFormulas() {
+
+        InputGenerator inputGenerator = new InputGenerator();
+        Prover prover = new Prover(false);
+        MolleAdapter molleAdapter = new MolleAdapter();
+        ModalSystem system = new ModalSystem("K");
+
+        // Current set of inconsistent formulas
+        ArrayList<String> inconsistentFormulas = new ArrayList<>();
+        inconsistentFormulas.add("(([](p&q)&q)|([]<>(p&p)|~[]<>(q&p)))");
+        inconsistentFormulas.add("(([](q|p)|[](q->p))->(<>[]~(p<->p)-><>[]q))");
+        inconsistentFormulas.add("(((p|p)<->p)<->(<>[](q<->p)->~~<>[](p->q)))");
+        inconsistentFormulas.add("(~((q->q)&<>[](p&p))|(q|~[]<>~(q|p)))");
+        inconsistentFormulas.add("((q|p)->(<><>[](p->q)|[][]([](q<->p)->q)))");
+        inconsistentFormulas.add("[]((~<>~<>(q<->q)|(p&p))|<>[]p)");
+        inconsistentFormulas.add("[]((<>[][]((p&p)&q)&(q|q))-><>[][](q->p))");
+        inconsistentFormulas.add("([]<>(p->p)|(p-><>~(~<>p<-><>(p&q))))");
+        inconsistentFormulas.add(" (([]<>~(p->q)->[]<>~q)|~(q->[]~q))");
+
+        for (int i=0; i<inconsistentFormulas.size(); i++) {
+            try {
+                Assertions.assertTrue(prover.proveFormula(inconsistentFormulas.get(i), system) == molleAdapter.proveFormula(inputGenerator.translateFormulaToMolle(inconsistentFormulas.get(i))), ("The validity of the formula " + inconsistentFormulas.get(i) + " is not consistent. " + i + " formulas have been successfully tested previously."));
+            } catch (UnrecognizableFormulaException e) {
+                e.printMessage();
+            } catch (MolleUnrecognizedFormulaException e) {
+                e.printMessage();
+            }
+        }
+    }
 }
