@@ -56,31 +56,15 @@ public class MolleTest {
 
     @Test
     public void crossValidateRandomInputFile() {
-
         InputGenerator inputGenerator = new InputGenerator();
-        Prover prover = new Prover(false);
-        MolleAdapter molleAdapter = new MolleAdapter();
         ModalSystem system = new ModalSystem("K");
-
         ArrayList<String> formulas = inputGenerator.generateFormulas(10000, 50, "K");
-
-        for (int i=0; i<formulas.size(); i++) {
-            try {
-                Assertions.assertTrue(prover.proveFormula(formulas.get(i), system) == molleAdapter.proveFormula(inputGenerator.translateFormulaToMolle(formulas.get(i))), ("The validity of the formula " + formulas.get(i) + " is not consistent. " + i + " formulas have been successfully tested previously."));
-            } catch (UnrecognizableFormulaException e) {
-                e.printMessage();
-            } catch (MolleUnrecognizedFormulaException e) {
-                e.printMessage();
-            }
-        }
+        crossValidate(formulas, system);
     }
 
     @Test
     public void crossValidateInconsistentFormulas() {
 
-        InputGenerator inputGenerator = new InputGenerator();
-        Prover prover = new Prover(false);
-        MolleAdapter molleAdapter = new MolleAdapter();
         ModalSystem system = new ModalSystem("K");
 
         // Current set of inconsistent formulas
@@ -95,9 +79,18 @@ public class MolleTest {
         inconsistentFormulas.add("([]<>(p->p)|(p-><>~(~<>p<-><>(p&q))))");
         inconsistentFormulas.add(" (([]<>~(p->q)->[]<>~q)|~(q->[]~q))");
 
-        for (int i=0; i<inconsistentFormulas.size(); i++) {
+        crossValidate(inconsistentFormulas, system);
+    }
+
+    void crossValidate(ArrayList<String> formulas, ModalSystem system) {
+
+        InputGenerator inputGenerator = new InputGenerator();
+        Prover prover = new Prover(false);
+        MolleAdapter molleAdapter = new MolleAdapter();
+
+        for (int i=0; i<formulas.size(); i++) {
             try {
-                Assertions.assertTrue(prover.proveFormula(inconsistentFormulas.get(i), system) == molleAdapter.proveFormula(inputGenerator.translateFormulaToMolle(inconsistentFormulas.get(i))), ("The validity of the formula " + inconsistentFormulas.get(i) + " is not consistent. " + i + " formulas have been successfully tested previously."));
+                Assertions.assertTrue(prover.proveFormula(formulas.get(i), system) == molleAdapter.proveFormula(inputGenerator.translateFormulaToMolle(formulas.get(i))), ("The validity of the formula " + formulas.get(i) + " is not consistent. " + i + " formulas have been successfully tested previously."));
             } catch (UnrecognizableFormulaException e) {
                 e.printMessage();
             } catch (MolleUnrecognizedFormulaException e) {
