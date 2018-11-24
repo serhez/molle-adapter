@@ -2,7 +2,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 
-public class MolleTest {
+public class MolleTests {
 
     @Test
     public void molleAcceptsValidFormulas() {
@@ -55,10 +55,10 @@ public class MolleTest {
     }
 
     @Test
-    public void crossValidateRandomInputFile() {
+    public void crossValidateRandomInputFile() throws InvalidNumberOfPropositionsException {
         InputGenerator inputGenerator = new InputGenerator();
         ModalSystem system = new ModalSystem("K");
-        ArrayList<String> formulas = inputGenerator.generateFormulas(10000, 50, "K");
+        ArrayList<String> formulas = inputGenerator.generateFormulas(10000, 50, 2, "K");
         crossValidate(formulas, system);
     }
 
