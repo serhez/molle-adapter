@@ -55,15 +55,15 @@ public class MolleTests {
     }
 
     @Test
-    public void crossValidateRandomInputFile() throws InvalidNumberOfPropositionsException {
+    public void crossValidateRandomInputFile() throws InvalidNumberOfPropositionsException, IncompatibleFrameConditionsException {
         InputGenerator inputGenerator = new InputGenerator();
         ModalSystem system = new ModalSystem("K");
-        ArrayList<String> formulas = inputGenerator.generateFormulas(10000, 50, 2, "K");
+        ArrayList<String> formulas = inputGenerator.generateFormulas(10000, 50, 2);
         crossValidate(formulas, system);
     }
 
     @Test
-    public void crossValidateInconsistentFormulas() {
+    public void crossValidateInconsistentFormulas() throws IncompatibleFrameConditionsException {
 
         ModalSystem system = new ModalSystem("K");
 
@@ -82,7 +82,7 @@ public class MolleTests {
         crossValidate(inconsistentFormulas, system);
     }
 
-    void crossValidate(ArrayList<String> formulas, ModalSystem system) {
+    void crossValidate(ArrayList<String> formulas, ModalSystem system) throws IncompatibleFrameConditionsException {
 
         InputGenerator inputGenerator = new InputGenerator();
         Prover prover = new Prover(false);
