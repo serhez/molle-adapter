@@ -57,15 +57,15 @@ public class MolleTests {
     @Test
     public void crossValidateRandomInputFile() throws InvalidNumberOfPropositionsException, IncompatibleFrameConditionsException {
         InputGenerator inputGenerator = new InputGenerator();
-        ModalSystem system = new ModalSystem("K");
+        ModalLogic logic = new ModalLogic("K");
         ArrayList<String> formulas = inputGenerator.generateFormulas(10000, 50, 2);
-        crossValidate(formulas, system);
+        crossValidate(formulas, logic);
     }
 
     @Test
     public void crossValidateInconsistentFormulas() throws IncompatibleFrameConditionsException {
 
-        ModalSystem system = new ModalSystem("K");
+        ModalLogic logic = new ModalLogic("K");
 
         // Current set of inconsistent formulas
         ArrayList<String> inconsistentFormulas = new ArrayList<>();
@@ -79,10 +79,10 @@ public class MolleTests {
         inconsistentFormulas.add("([]<>(p->p)|(p-><>~(~<>p<-><>(p&q))))");
         inconsistentFormulas.add(" (([]<>~(p->q)->[]<>~q)|~(q->[]~q))");
 
-        crossValidate(inconsistentFormulas, system);
+        crossValidate(inconsistentFormulas, logic);
     }
 
-    void crossValidate(ArrayList<String> formulas, ModalSystem system) throws IncompatibleFrameConditionsException {
+    void crossValidate(ArrayList<String> formulas, ModalLogic logic) throws IncompatibleFrameConditionsException {
 
         InputGenerator inputGenerator = new InputGenerator();
         Prover prover = new Prover();
@@ -94,7 +94,7 @@ public class MolleTests {
 
         for (int i=0; i<formulas.size(); i++) {
             try {
-                Assertions.assertTrue(prover.proveFormula(formulas.get(i), system) == molleAdapter.proveFormula(inputGenerator.translateFormulaToMolle(formulas.get(i))), ("The validity of the formula " + formulas.get(i) + " is not consistent. " + i + " formulas have been successfully tested previously."));
+                Assertions.assertTrue(prover.proveFormula(formulas.get(i), logic) == molleAdapter.proveFormula(inputGenerator.translateFormulaToMolle(formulas.get(i))), ("The validity of the formula " + formulas.get(i) + " is not consistent. " + i + " formulas have been successfully tested previously."));
                 System.out.println("Cross-validated " + (i+1) + " formulas successfully");
             } catch (UnrecognizableFormulaException e) {
                 e.printMessage();
